@@ -1,0 +1,15 @@
+const path = require("path");
+console.log("current file info : \n");
+console.log("filename :", __filename);
+console.log("directory :", __dirname);
+console.log("\n" + "-".repeat(50) + "\n");
+const filePath = "/rezwan/document/ttr.pdf";
+console.log("analyzing path ", filePath);
+console.log("Directory: ", path.dirname(filePath));
+console.log("baseName: ", path.basename(filePath));
+console.log("extension name ", path.extname(filePath));
+console.log("file name ", path.basename(filePath, path.extname(filePath)));
+console.log("\n" + "-".repeat(50) + "\n");
+const parsed = path.parse(__filename);
+console.log("parsed pat obj", parsed);
+console.log("formeted path: ", path.format(parsed));
