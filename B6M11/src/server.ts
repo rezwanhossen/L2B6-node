@@ -2,6 +2,8 @@ import http, { IncomingMessage, Server, ServerResponse } from "http";
 import config from "./config";
 import { RouteHandler, routes } from "./helpers/RouteHaneler";
 import "./routes";
+import dynamicRoute from "./helpers/dynamic";
+
 const server: Server = http.createServer(
   (req: IncomingMessage, res: ServerResponse) => {
     const method = req.method?.toLowerCase() || "";
@@ -10,6 +12,10 @@ const server: Server = http.createServer(
     const handeler: RouteHandler | undefined = methodMap?.get(path);
     if (handeler) {
       handeler(req, res);
+    } else if (dynamicRoute(method, path)) {
+      const match = dynamicRoute(method, path);
+      (req as any).params = match?.params;
+      match?.handeler(req, res);
     } else {
       res.writeHead(404, { "content-type": "application/json" });
       res.end(
