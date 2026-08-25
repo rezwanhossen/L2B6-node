@@ -52,6 +52,26 @@ addRoutes("PUT", "/api/user/:id", async (req, res) => {
   });
 });
 
+addRoutes("DELETE", "/api/user/:id", async (req, res) => {
+  const { id } = (req as any).params;
+  const users = readUsers();
+  const index = users.findIndex((user: any) => user.id == id);
+  if (index === -1) {
+    return sendjson(res, 404, {
+      success: false,
+      message: "user not found",
+    });
+  }
+  const deletedUser = users[index];
+  users.splice(index, 1);
+  writeUsers(users);
+  return sendjson(res, 200, {
+    success: true,
+    message: `user deleted successfully id: ${id}`,
+    data: deletedUser,
+  });
+});
+
 //==================================
 // res.writeHead(200, {
 //   "content-type": "application/json",
